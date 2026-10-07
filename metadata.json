@@ -1,0 +1,6 @@
+{
+  "name": "YorVoca",
+  "description": "Progressive Web App de orientación vocacional y exploración académica en Colombia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
