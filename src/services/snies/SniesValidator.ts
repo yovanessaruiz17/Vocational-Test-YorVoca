@@ -113,6 +113,11 @@ export function validateSniesProgram(
         `El programa "${program.name}" no puede declararse con fuente tipo "snies" sin un código SNIES individual verificado.`
       );
     }
+    if (!program.sniesCode && sourceRecord.verificationStatus === 'verified') {
+      errors.push(
+        `El programa "${program.name}" sin código SNIES individual confirmado debe tener verificationStatus = "partial" y no "verified".`
+      );
+    }
     if (
       (sourceRecord.type === 'snies' || sourceRecord.type === 'men_open_data') &&
       !isOfficialMenSourceUrl(sourceRecord.sourceUrl) &&

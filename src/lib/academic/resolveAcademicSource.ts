@@ -16,16 +16,20 @@ import { verifyOfficialDomain } from './verifyOfficialDomain';
 export const DEFAULT_STALE_THRESHOLD_DAYS = 180;
 
 /**
- * Determina el estado de verificación (`verified` | `stale` | `unavailable` | `mock`)
- * según el tipo de fuente, disponibilidad de URL/datos y antigüedad de `lastVerifiedAt` (Sección 18).
+ * Determina el estado de verificación (`verified` | `partial` | `stale` | `unavailable` | `mock`)
+ * según el tipo de fuente, disponibilidad de código SNIES individual o institucional,
+ * disponibilidad de URL/datos y antigüedad de `lastVerifiedAt` (Sección 18 y F6A.2.3).
  *
- * REGLA SECCIÓN 19 y 36:
- * Una fuente `mock` NUNCA puede obtener estado `verified`; siempre devuelve `mock`.
+ * REGLA SECCIÓN 19, 36 y F6A.2.3:
+ * - Una fuente `mock` NUNCA puede obtener estado `verified` ni `partial`; siempre devuelve `mock`.
+ * - Si `hasVerifiedSniesCode === false` (ej. un programa de portal oficial sin código SNIES individual confirmado,
+ *   o una institución sin código IES confirmado), devuelve `partial` (o `stale` si superó el umbral de vigencia).
  */
 export function computeSourceVerificationStatus(options: {
   sourceType: AcademicSourceType;
   lastVerifiedAt?: string;
   isSourceAvailable?: boolean;
+  hasVerifiedSniesCode?: boolean;
   referenceDateIso?: string;
   staleThresholdDays?: number;
 }): SourceVerificationStatus {
@@ -33,6 +37,7 @@ export function computeSourceVerificationStatus(options: {
     sourceType,
     lastVerifiedAt,
     isSourceAvailable = true,
+    hasVerifiedSniesCode = true,
     referenceDateIso,
     staleThresholdDays = DEFAULT_STALE_THRESHOLD_DAYS,
   } = options;
@@ -55,6 +60,10 @@ export function computeSourceVerificationStatus(options: {
 
   if (ageDays > staleThresholdDays) {
     return 'stale';
+  }
+
+  if (!hasVerifiedSniesCode) {
+    return 'partial';
   }
 
   return 'verified';

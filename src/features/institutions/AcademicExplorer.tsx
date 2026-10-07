@@ -363,52 +363,98 @@ export const AcademicExplorer: React.FC = () => {
         </div>
       )}
 
-      {/* 31. Si no hay resultados */}
+      {/* 31. Si no hay resultados: distinguir carrera sin cobertura en el catálogo local vs filtros restrictivos */}
       {dataStatus === 'empty' && (
         <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 space-y-5">
-          <div className="space-y-1.5">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900">
-              No encontramos programas que coincidan con todos tus filtros activos.
-            </h2>
-            {typeof searchResult?.unfilteredCareerProgramsCount === 'number' &&
-            searchResult.unfilteredCareerProgramsCount > 0 ? (
-              <p className="text-sm font-medium text-blue-700">
-                Existen {searchResult.unfilteredCareerProgramsCount} programas compatibles con tu
-                selección vocacional en el catálogo de Colombia que están ocultos por los filtros
-                actuales (ubicación, modalidad, sector o tipo de institución).
-              </p>
-            ) : (
-              <p className="text-sm text-gray-600">Prueba ampliando la búsqueda:</p>
-            )}
-          </div>
+          {filters.careerScope === 'specific' &&
+          exploredCareerContext &&
+          (searchResult?.unfilteredCareerProgramsCount ?? 0) === 0 ? (
+            <>
+              <div className="space-y-1.5">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                  Aún no tenemos programas verificados para {exploredCareerContext.career.name} en
+                  el catálogo académico actual.
+                </h2>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Tu afinidad vocacional con {exploredCareerContext.career.name} sigue siendo válida
+                  en tu perfil, pero en este corte del catálogo local verificado no hay programas
+                  directos ni estrechamente equivalentes registrados para esta carrera.
+                </p>
+              </div>
 
-          <ul className="space-y-1.5 text-xs sm:text-sm text-gray-600 pl-4 list-disc">
-            <li>Explorar opciones en otras ciudades o departamentos de Colombia;</li>
-            <li>Cambiar la modalidad a &ldquo;Cualquier modalidad&rdquo;;</li>
-            <li>Incluir otros tipos de institución (universidades, tecnológicas, SENA) y sectores;</li>
-            <li>Permitir tanto programas directos como programas relacionados.</li>
-          </ul>
+              <ul className="space-y-1.5 text-xs sm:text-sm text-gray-600 pl-4 list-disc">
+                <li>Explorar programas compatibles con tus 5 carreras recomendadas (Top 5);</li>
+                <li>Consultar la ficha vocacional de {exploredCareerContext.career.name};</li>
+                <li>Explorar todas las carreras disponibles en el catálogo académico actual.</li>
+              </ul>
 
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={expandFiltersToAllColombia}
-              className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
-            >
-              {typeof searchResult?.unfilteredCareerProgramsCount === 'number' &&
-              searchResult.unfilteredCareerProgramsCount > 0
-                ? `Ver los ${searchResult.unfilteredCareerProgramsCount} programas disponibles en Colombia`
-                : 'Ampliar búsqueda a toda Colombia'}
-            </button>
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => updateFilters({ careerScope: 'top5', careerId: undefined })}
+                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                >
+                  Ver programas para mi Top 5 vocacional
+                </button>
 
-            <button
-              type="button"
-              onClick={resetFiltersToContext}
-              className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
-            >
-              Restablecer filtros iniciales
-            </button>
-          </div>
+                <button
+                  type="button"
+                  onClick={() => updateFilters({ careerScope: 'all', careerId: undefined })}
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
+                >
+                  Explorar todo el catálogo de Colombia
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="space-y-1.5">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                  No encontramos programas que coincidan con todos tus filtros activos.
+                </h2>
+                {typeof searchResult?.unfilteredCareerProgramsCount === 'number' &&
+                searchResult.unfilteredCareerProgramsCount > 0 ? (
+                  <p className="text-sm font-medium text-blue-700">
+                    Existen {searchResult.unfilteredCareerProgramsCount} programas compatibles con tu
+                    selección vocacional en el catálogo de Colombia que están ocultos por los filtros
+                    actuales (ubicación, modalidad, sector o tipo de institución).
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-600">Prueba ampliando la búsqueda:</p>
+                )}
+              </div>
+
+              <ul className="space-y-1.5 text-xs sm:text-sm text-gray-600 pl-4 list-disc">
+                <li>Explorar opciones en otras ciudades o departamentos de Colombia;</li>
+                <li>Cambiar la modalidad a &ldquo;Cualquier modalidad&rdquo;;</li>
+                <li>
+                  Incluir otros tipos de institución (universidades, tecnológicas, SENA) y sectores;
+                </li>
+                <li>Permitir tanto programas directos como programas relacionados.</li>
+              </ul>
+
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={expandFiltersToAllColombia}
+                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                >
+                  {typeof searchResult?.unfilteredCareerProgramsCount === 'number' &&
+                  searchResult.unfilteredCareerProgramsCount > 0
+                    ? `Ver los ${searchResult.unfilteredCareerProgramsCount} programas disponibles en Colombia`
+                    : 'Ampliar búsqueda a toda Colombia'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={resetFiltersToContext}
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
+                >
+                  Restablecer filtros iniciales
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
 

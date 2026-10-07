@@ -787,7 +787,7 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
       }
     }
 
-    // 9.4 Verificar conteo exacto: 18 programas con código SNIES primario y 15 programas parciales sin sniesCode
+    // 9.4 Verificar conteo exacto: 18 programas con código SNIES primario ('verified') y 15 programas parciales sin sniesCode ('partial')
     const programsWithSnies = programs.filter((p) => Boolean(p.sniesCode));
     const programsWithoutSnies = programs.filter((p) => !p.sniesCode);
     assert(
@@ -795,10 +795,24 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
       `Expected 18 programs with verified SNIES code and 15 without SNIES code, got ${programsWithSnies.length} and ${programsWithoutSnies.length}`
     );
 
-    // 9.5 Ningún programa sin sniesCode puede tener source.type === 'snies'
+    // 9.5 Semántica estricta de verificación (F6A.2.3):
+    // - Los 18 programas con sniesCode confirmado tienen sourceStatus === 'verified' y source.verificationStatus === 'verified'
+    // - Los 15 programas sin sniesCode confirmado tienen sourceStatus === 'partial', source.verificationStatus === 'partial' y nunca source.type === 'snies'
     assert(
-      programsWithoutSnies.every((p) => p.source.type !== 'snies'),
-      'Programs without an individual SNIES code must never claim source.type === "snies"'
+      programsWithSnies.every(
+        (p) =>
+          p.sourceStatus === 'verified' && p.source.verificationStatus === 'verified'
+      ),
+      'All 18 programs with confirmed individual SNIES code must have verificationStatus === "verified"'
+    );
+    assert(
+      programsWithoutSnies.every(
+        (p) =>
+          p.source.type !== 'snies' &&
+          p.sourceStatus === 'partial' &&
+          p.source.verificationStatus === 'partial'
+      ),
+      'All 15 programs without an individual SNIES code must have source.type !== "snies" and verificationStatus === "partial", never "verified"'
     );
 
     // 9.6 Verificar manifiesto de auditoría F6A.1
@@ -809,11 +823,11 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
 
     passed++;
     results.push(
-      'PASS [F6A.1 Test 09]: Auditoría de calidad, verificabilidad, procedencia primaria y depuración de códigos SNIES no verificados completada.'
+      'PASS [F6A.1 / F6A.2.3 Test 09]: Auditoría de calidad, verificabilidad (18 verified con SNIES vs 15 partial sin SNIES), procedencia primaria y depuración de códigos SNIES completada.'
     );
   }
 
-  // Test 10: F6A.2 Corrección definitiva del pipeline del Academic Explorer (0 carreras en blanco y priorización por preferencias)
+  // Test 10: F6A.2 y F6A.2.3 Corrección controlada del matching académico y cobertura honesta del catálogo
   {
     const localProvider = new LocalAcademicProvider({
       repository: defaultAcademicRepository,
@@ -838,16 +852,39 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
       'Student context must separate institutionType=university, sector=private and modality=hybrid'
     );
 
-    // Verificar las 5 carreras críticas auditadas: Diseño Digital, Ingeniería de Sistemas, Diseño Gráfico, Administración de Empresas, Derecho
-    const criticalCareerIds = [
-      'digital_design',
-      'engineering_systems',
-      'graphic_design',
-      'business_administration',
-      'law',
-    ];
+    // 10.1 Verificar las 5 carreras críticas auditadas:
+    // - digital_design: exactamente 3 matches relacionados razonables (Diseño Gráfico UNAL, Diseño Industrial UNAL, Comunicación Social Unicartagena) y NINGÚN programa puro de desarrollo de software
+    const digitalDesignRes = await localProvider.searchPrograms(
+      buildInitialAcademicFilters({
+        studentContext: restrictiveOnboardingContext,
+        selectedCareerId: 'digital_design',
+      }),
+      { studentContext: normalizedPrefs }
+    );
+    const digitalProgIds = digitalDesignRes.programs.map((p) => p.program.programId);
+    assert(
+      digitalDesignRes.status === 'ready' &&
+        digitalDesignRes.programs.length === 3 &&
+        digitalProgIds.includes('snies_prog_4') &&
+        digitalProgIds.includes('snies_prog_5') &&
+        digitalProgIds.includes(
+          'prog_snies_inst_1205_comunicacion_social_cartagena'
+        ) &&
+        !digitalProgIds.some((id) => id.includes('desarrollo_de_software')),
+      `digital_design must return exactly 3 related programs (Diseño Gráfico, Diseño Industrial, Comunicación Social) and never pure software development programs; got ${digitalProgIds.join(', ')}`
+    );
 
-    for (const careerId of criticalCareerIds) {
+    // - engineering_systems, graphic_design, business_administration, law siguen funcionando sin regresión
+    const expectedCountsByCriticalCareer: Record<string, number> = {
+      engineering_systems: 9,
+      graphic_design: 3,
+      business_administration: 7,
+      law: 2,
+    };
+
+    for (const [careerId, expectedCount] of Object.entries(
+      expectedCountsByCriticalCareer
+    )) {
       const initialFilters = buildInitialAcademicFilters({
         studentContext: restrictiveOnboardingContext,
         selectedCareerId: careerId,
@@ -859,14 +896,52 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
 
       assert(
         res.status === 'ready' &&
-          res.programs.length > 0 &&
+          res.programs.length === expectedCount &&
           res.institutions.length > 0,
-        `Career "${careerId}" must return > 0 programs and > 0 institutions with initial explorer filters, got ${res.programs.length}`
+        `Career "${careerId}" must return ${expectedCount} programs and > 0 institutions, got ${res.programs.length}`
       );
     }
 
-    // Verificar que las 35 carreras del catálogo vocacional devuelven > 0 programas en el explorador
-    for (const career of CAREERS) {
+    // 10.2 Verificar que las 9 carreras sin oferta real ni estrechamente equivalente en el catálogo actual (33 programas)
+    // devuelven 0 programas de forma honesta (status='empty') sin inventar ni forzar matches débiles:
+    const careersWithoutCoverageIds = [
+      'fashion_design',
+      'dentistry',
+      'nutrition_dietetics',
+      'chemistry',
+      'physics',
+      'early_childhood_education',
+      'mathematics_education',
+      'physical_education',
+      'forestry_engineering',
+    ];
+
+    for (const careerId of careersWithoutCoverageIds) {
+      const res = await localProvider.searchPrograms(
+        buildInitialAcademicFilters({
+          studentContext: restrictiveOnboardingContext,
+          selectedCareerId: careerId,
+        }),
+        { studentContext: normalizedPrefs }
+      );
+      assert(
+        res.status === 'empty' &&
+          res.programs.length === 0 &&
+          res.unfilteredCareerProgramsCount === 0,
+        `Career "${careerId}" without real coverage in the 33-program catalog must honestly return 0 programs (status=empty), got ${res.programs.length}`
+      );
+    }
+
+    // 10.3 Verificar que las 38 carreras restantes del catálogo de 47 sí devuelven > 0 programas verificables
+    const coveredCareers = CAREERS.filter(
+      (c) => !careersWithoutCoverageIds.includes(c.id)
+    );
+    assert(
+      CAREERS.length === 47 && coveredCareers.length === 38,
+      `Expected 47 total careers (38 covered, 9 without local catalog coverage), got ${CAREERS.length} total and ${coveredCareers.length} covered`
+    );
+
+    for (const career of coveredCareers) {
       const initialFilters = buildInitialAcademicFilters({
         studentContext: restrictiveOnboardingContext,
         selectedCareerId: career.id,
@@ -875,13 +950,15 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
         studentContext: normalizedPrefs,
       });
       assert(
-        res.programs.length > 0 && res.institutions.length > 0,
-        `Every career in CAREERS must have > 0 matching programs in the catalog; failed for ${career.id} (${career.name})`
+        res.status === 'ready' &&
+          res.programs.length > 0 &&
+          res.institutions.length > 0,
+        `Covered career ${career.id} (${career.name}) must return > 0 matching programs; got ${res.programs.length}`
       );
     }
 
-    // Verificar que cuando el usuario aplica un filtro explícito imposible (ej. Diseño Gráfico en Manizales Virtual),
-    // unfilteredCareerProgramsCount informa cuántos programas existen en Colombia sin esos filtros
+    // 10.4 Verificar que cuando el usuario aplica un filtro explícito imposible sobre una carrera con cobertura (ej. Diseño Digital en Manizales Virtual),
+    // unfilteredCareerProgramsCount informa cuántos programas existen en Colombia sin esos filtros (3 programas)
     const emptyExplicitRes = await localProvider.searchPrograms({
       careerScope: 'specific',
       careerId: 'digital_design',
@@ -891,14 +968,13 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
     assert(
       emptyExplicitRes.status === 'empty' &&
         emptyExplicitRes.programs.length === 0 &&
-        typeof emptyExplicitRes.unfilteredCareerProgramsCount === 'number' &&
-        emptyExplicitRes.unfilteredCareerProgramsCount >= 5,
-      `Explicit restrictive filter must report unfilteredCareerProgramsCount >= 5 for digital_design, got ${emptyExplicitRes.unfilteredCareerProgramsCount}`
+        emptyExplicitRes.unfilteredCareerProgramsCount === 3,
+      `Explicit restrictive filter must report unfilteredCareerProgramsCount === 3 for digital_design, got ${emptyExplicitRes.unfilteredCareerProgramsCount}`
     );
 
     passed++;
     results.push(
-      'PASS [F6A.2 Test 10]: Pipeline del Academic Explorer verificado (las 5 carreras auditadas y las 35 carreras del catálogo retornan > 0 programas e instituciones sin bloqueos silenciosos por onboarding).'
+      'PASS [F6A.2.3 Test 10]: Matching controlado verificado (digital_design = 3 sin sobre-matching de software; 26 carreras con cobertura real y 9 carreras reportadas honestamente sin cobertura en el catálogo actual).'
     );
   }
 

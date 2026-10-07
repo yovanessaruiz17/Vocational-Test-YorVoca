@@ -91,7 +91,7 @@ export function getProgramTrustIndicator(item: EnrichedAcademicProgram): {
   if (status === 'unavailable') {
     return { label: 'Fuente temporalmente no disponible', tone: 'stale' };
   }
-  if (!program.sniesCode) {
+  if (status === 'partial' || !program.sniesCode) {
     return { label: 'Información oficial parcial', tone: 'partial' };
   }
   return { label: '✓ Información oficial verificada', tone: 'verified' };

@@ -320,16 +320,6 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
         relevance: 'medium',
         rationale: 'Incluye producción de contenidos digitales, medios interactivos y narrativa transmedia.',
       },
-      {
-        keyword: 'tecnologia en desarrollo de software',
-        relevance: 'low',
-        rationale: 'Complementaria en la construcción técnica de interfaces web, móviles y productos digitales.',
-      },
-      {
-        keyword: 'analisis y desarrollo de software',
-        relevance: 'low',
-        rationale: 'Complementaria en implementación frontend y desarrollo de aplicaciones interactivas.',
-      },
     ],
   },
   architecture: {
@@ -349,18 +339,7 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
   },
   fashion_design: {
     directKeywords: ['diseno de modas', 'diseno textil', 'diseno de vestuario'],
-    relatedKeywords: [
-      {
-        keyword: 'diseno industrial',
-        relevance: 'medium',
-        rationale: 'Comparte metodologías de diseño de producto, estudio de materiales, ergonomía y morfología.',
-      },
-      {
-        keyword: 'diseno grafico',
-        relevance: 'medium',
-        rationale: 'Afín en dirección de arte, identidad visual de marca, ilustración y comunicación estética.',
-      },
-    ],
+    relatedKeywords: [],
   },
   business_administration: {
     directKeywords: ['administracion de empresas', 'administracion de negocios'],
@@ -558,38 +537,11 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
   },
   dentistry: {
     directKeywords: ['odontologia'],
-    relatedKeywords: [
-      {
-        keyword: 'medicina',
-        relevance: 'medium',
-        rationale: 'Comparte ciencias biomédicas, diagnóstico clínico y atención integral en salud.',
-      },
-      {
-        keyword: 'enfermeria',
-        relevance: 'low',
-        rationale: 'Afín en promoción de la salud, prevención y cuidado clínico del paciente.',
-      },
-    ],
+    relatedKeywords: [],
   },
   nutrition_dietetics: {
     directKeywords: ['nutricion y dietetica', 'nutricion'],
-    relatedKeywords: [
-      {
-        keyword: 'medicina',
-        relevance: 'medium',
-        rationale: 'Relacionada en salud metabólica, prevención clínica y salud pública.',
-      },
-      {
-        keyword: 'enfermeria',
-        relevance: 'medium',
-        rationale: 'Comparte el enfoque en promoción de la salud, bienestar y cuidado comunitario.',
-      },
-      {
-        keyword: 'biologia',
-        relevance: 'low',
-        rationale: 'Comparte fundamentos de bioquímica, fisiología y ciencias de la vida.',
-      },
-    ],
+    relatedKeywords: [],
   },
   psychology: {
     directKeywords: ['psicologia'],
@@ -618,38 +570,11 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
   },
   chemistry: {
     directKeywords: ['quimica', 'quimica farmaceutica', 'quimica industrial'],
-    relatedKeywords: [
-      {
-        keyword: 'biologia',
-        relevance: 'high',
-        rationale: 'Comparte ciencias experimentales de laboratorio, bioquímica y análisis científico.',
-      },
-      {
-        keyword: 'ingenieria ambiental',
-        relevance: 'medium',
-        rationale: 'Afín en análisis fisicoquímico de aguas, suelos y control de procesos ambientales.',
-      },
-    ],
+    relatedKeywords: [],
   },
   physics: {
     directKeywords: ['fisica', 'ingenieria fisica'],
-    relatedKeywords: [
-      {
-        keyword: 'ingenieria electronica',
-        relevance: 'high',
-        rationale: 'Aplica directamente electromagnetismo, circuitos, física de semiconductores e instrumentación.',
-      },
-      {
-        keyword: 'ingenieria civil',
-        relevance: 'medium',
-        rationale: 'Fundamentada en mecánica clásica, análisis estructural e hidráulica.',
-      },
-      {
-        keyword: 'ingenieria de sistemas',
-        relevance: 'low',
-        rationale: 'Relacionada en modelamiento matemático, simulación computacional y cálculo.',
-      },
-    ],
+    relatedKeywords: [],
   },
   mathematics: {
     directKeywords: ['matematicas', 'matematicas aplicadas'],
@@ -756,38 +681,11 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
       'licenciatura en educacion infantil',
       'licenciatura en pedagogia infantil',
     ],
-    relatedKeywords: [
-      {
-        keyword: 'licenciatura en lenguas extranjeras',
-        relevance: 'medium',
-        rationale: 'Comparte el núcleo de formación docente, pedagogía, currículo y didáctica.',
-      },
-      {
-        keyword: 'psicologia',
-        relevance: 'medium',
-        rationale: 'Afín en procesos de desarrollo cognitivo, emocional y aprendizaje en la infancia.',
-      },
-      {
-        keyword: 'trabajo social',
-        relevance: 'low',
-        rationale: 'Relacionada en acompañamiento familiar, comunitario y protección integral de la niñez.',
-      },
-    ],
+    relatedKeywords: [],
   },
   mathematics_education: {
     directKeywords: ['licenciatura en matematicas'],
-    relatedKeywords: [
-      {
-        keyword: 'licenciatura en lenguas extranjeras',
-        relevance: 'medium',
-        rationale: 'Comparte formación pedagógica universitaria, didáctica y evaluación educativa.',
-      },
-      {
-        keyword: 'ingenieria de sistemas',
-        relevance: 'low',
-        rationale: 'Afín en pensamiento lógico-matemático, resolución de problemas y modelamiento.',
-      },
-    ],
+    relatedKeywords: [],
   },
   foreign_languages_education: {
     directKeywords: [
@@ -814,18 +712,7 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
       'ciencias del deporte',
       'profesional en deporte',
     ],
-    relatedKeywords: [
-      {
-        keyword: 'fisioterapia',
-        relevance: 'high',
-        rationale: 'Comparte el estudio del movimiento corporal humano, ejercicio físico y salud deportiva.',
-      },
-      {
-        keyword: 'licenciatura en lenguas extranjeras',
-        relevance: 'low',
-        rationale: 'Comparte fundamentos de pedagogía, didáctica y formación docente.',
-      },
-    ],
+    relatedKeywords: [],
   },
   social_communication: {
     directKeywords: ['comunicacion social', 'comunicacion social y periodismo'],
@@ -938,23 +825,7 @@ export const CAREER_ACADEMIC_NORMALIZATION_RULES: Record<string, CareerAcademicR
   },
   forestry_engineering: {
     directKeywords: ['ingenieria forestal'],
-    relatedKeywords: [
-      {
-        keyword: 'ingenieria ambiental',
-        relevance: 'high',
-        rationale: 'Comparte conservación de cuencas, restauración ecológica y manejo sostenible de recursos.',
-      },
-      {
-        keyword: 'biologia',
-        relevance: 'high',
-        rationale: 'Comparte el estudio de la biodiversidad, botánica, ecología y ecosistemas terrestres.',
-      },
-      {
-        keyword: 'tecnologia en gestion ambiental',
-        relevance: 'medium',
-        rationale: 'Afín en gestión ambiental territorial y sostenibilidad.',
-      },
-    ],
+    relatedKeywords: [],
   },
   environmental_management: {
     directKeywords: [

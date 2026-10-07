@@ -232,7 +232,7 @@ export function normalizeStudentContextForAcademic(
     studyLocationPreference = 'current_city';
   } else if (targetCity) {
     studyLocationPreference = 'specific_city';
-  } else if (currentCity && geographicFlexibility !== 'any_colombian_city') {
+  } else if (currentCity) {
     studyLocationPreference = 'current_city';
   } else {
     studyLocationPreference = 'undecided';

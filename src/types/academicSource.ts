@@ -6,6 +6,7 @@ export type AcademicSourceType =
 
 export type SourceVerificationStatus =
   | 'verified'
+  | 'partial'
   | 'stale'
   | 'unavailable'
   | 'mock';

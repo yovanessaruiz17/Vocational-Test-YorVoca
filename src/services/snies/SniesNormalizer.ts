@@ -188,6 +188,7 @@ export function normalizeRawSniesInstitution(
     sourceType,
     lastVerifiedAt: input.lastVerifiedAt,
     isSourceAvailable: Boolean(input.sourceUrl),
+    hasVerifiedSniesCode: Boolean(code),
     referenceDateIso,
   });
 
@@ -288,6 +289,7 @@ export function normalizeRawSniesProgram(
     sourceType,
     lastVerifiedAt: input.lastVerifiedAt,
     isSourceAvailable: Boolean(input.sourceUrl),
+    hasVerifiedSniesCode: Boolean(sniesCode),
     referenceDateIso,
   });
 

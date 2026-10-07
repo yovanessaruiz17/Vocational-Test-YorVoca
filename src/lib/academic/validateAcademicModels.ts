@@ -35,6 +35,7 @@ const VALID_SOURCE_TYPES: AcademicSourceType[] = [
 
 const VALID_VERIFICATION_STATUSES: SourceVerificationStatus[] = [
   'verified',
+  'partial',
   'stale',
   'unavailable',
   'mock',
@@ -372,6 +373,17 @@ export function validateInstitution(raw: unknown): {
     }
   }
 
+  const hasInstSniesCode = Boolean(sniesCode && sniesCode.trim().length > 0);
+  const effectiveInstVerificationStatus: SourceVerificationStatus =
+    sourceCheck.source.provider === 'mock'
+      ? 'mock'
+      : !hasInstSniesCode &&
+        (candidate.sourceStatus === 'verified' ||
+          sourceCheck.source.verificationStatus === 'verified' ||
+          candidate.sourceStatus === undefined)
+      ? 'partial'
+      : candidate.sourceStatus ?? sourceCheck.source.verificationStatus ?? 'verified';
+
   return {
     isValid: true,
     institution: {
@@ -384,11 +396,11 @@ export function validateInstitution(raw: unknown): {
       sniesInstitutionCode: sniesCode,
       officialWebsite: websiteUrl,
       officialWebsiteUrl: websiteUrl,
-      sourceStatus:
-        candidate.sourceStatus ??
-        sourceCheck.source.verificationStatus ??
-        (sourceCheck.source.provider === 'mock' ? 'mock' : 'verified'),
-      source: sourceCheck.source,
+      sourceStatus: effectiveInstVerificationStatus,
+      source: {
+        ...sourceCheck.source,
+        verificationStatus: effectiveInstVerificationStatus,
+      },
     },
   };
 }
@@ -522,6 +534,17 @@ export function validateAcademicProgram(
     }
   }
 
+  const hasSniesCode = Boolean(candidate.sniesCode && candidate.sniesCode.trim().length > 0);
+  const effectiveSourceVerificationStatus: SourceVerificationStatus =
+    sourceCheck.source.provider === 'mock'
+      ? 'mock'
+      : !hasSniesCode &&
+        (candidate.sourceStatus === 'verified' ||
+          sourceCheck.source.verificationStatus === 'verified' ||
+          candidate.sourceStatus === undefined)
+      ? 'partial'
+      : candidate.sourceStatus ?? sourceCheck.source.verificationStatus ?? 'verified';
+
   return {
     isValid: true,
     program: {
@@ -532,11 +555,11 @@ export function validateAcademicProgram(
       municipality: candidate.municipality ?? effectiveCity,
       officialUrl: programUrl,
       officialProgramUrl: programUrl,
-      sourceStatus:
-        candidate.sourceStatus ??
-        sourceCheck.source.verificationStatus ??
-        (sourceCheck.source.provider === 'mock' ? 'mock' : 'verified'),
-      source: sourceCheck.source,
+      sourceStatus: effectiveSourceVerificationStatus,
+      source: {
+        ...sourceCheck.source,
+        verificationStatus: effectiveSourceVerificationStatus,
+      },
     },
   };
 }
