@@ -372,13 +372,12 @@ export const AcademicExplorer: React.FC = () => {
             <>
               <div className="space-y-1.5">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
-                  Aún no tenemos programas verificados para {exploredCareerContext.career.name} en
-                  el catálogo académico actual.
+                  Actualmente no tenemos programas académicos suficientemente relacionados con{' '}
+                  {exploredCareerContext.career.name} en nuestro catálogo.
                 </h2>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Tu afinidad vocacional con {exploredCareerContext.career.name} sigue siendo válida
-                  en tu perfil, pero en este corte del catálogo local verificado no hay programas
-                  directos ni estrechamente equivalentes registrados para esta carrera.
+                  Esto representa una limitación del catálogo académico actual y no invalida tu
+                  perfil ni tu afinidad vocacional con {exploredCareerContext.career.name}.
                 </p>
               </div>
 

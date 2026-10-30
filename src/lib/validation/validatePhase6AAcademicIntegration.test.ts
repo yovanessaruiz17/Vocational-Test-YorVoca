@@ -932,7 +932,7 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
       );
     }
 
-    // 10.3 Verificar que las 38 carreras restantes del catálogo de 47 sí devuelven > 0 programas verificables
+    // 10.3 Verificar las 47 carreras en total: 38 con alguna cobertura académica significativa (26 con cobertura directa y 12 exclusivamente relacionada) y 9 sin cobertura significativa
     const coveredCareers = CAREERS.filter(
       (c) => !careersWithoutCoverageIds.includes(c.id)
     );
@@ -974,7 +974,7 @@ export async function runPhase6AAcademicIntegrationTests(): Promise<{
 
     passed++;
     results.push(
-      'PASS [F6A.2.3 Test 10]: Matching controlado verificado (digital_design = 3 sin sobre-matching de software; 26 carreras con cobertura real y 9 carreras reportadas honestamente sin cobertura en el catálogo actual).'
+      'PASS [F6A.2.3 Test 10]: Matching controlado verificado (digital_design = 3 sin sobre-matching de software; 47 carreras en total: 26 con cobertura directa, 12 exclusivamente relacionada, 38 con cobertura académica significativa y 9 sin cobertura significativa en el catálogo actual).'
     );
   }
 
