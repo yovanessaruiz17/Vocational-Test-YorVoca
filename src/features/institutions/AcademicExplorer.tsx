@@ -387,11 +387,11 @@ export const AcademicExplorer: React.FC = () => {
                 <li>Explorar todas las carreras disponibles en el catálogo académico actual.</li>
               </ul>
 
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
                 <button
                   type="button"
                   onClick={() => updateFilters({ careerScope: 'top5', careerId: undefined })}
-                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors w-full sm:w-auto text-center justify-center"
                 >
                   Ver programas para mi Top 5 vocacional
                 </button>
@@ -399,7 +399,7 @@ export const AcademicExplorer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => updateFilters({ careerScope: 'all', careerId: undefined })}
-                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors w-full sm:w-auto text-center justify-center"
                 >
                   Explorar todo el catálogo de Colombia
                 </button>
@@ -432,11 +432,11 @@ export const AcademicExplorer: React.FC = () => {
                 <li>Permitir tanto programas directos como programas relacionados.</li>
               </ul>
 
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
                 <button
                   type="button"
                   onClick={expandFiltersToAllColombia}
-                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors w-full sm:w-auto text-center justify-center"
                 >
                   {typeof searchResult?.unfilteredCareerProgramsCount === 'number' &&
                   searchResult.unfilteredCareerProgramsCount > 0
@@ -447,7 +447,7 @@ export const AcademicExplorer: React.FC = () => {
                 <button
                   type="button"
                   onClick={resetFiltersToContext}
-                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-medium hover:bg-gray-50 transition-colors w-full sm:w-auto text-center justify-center"
                 >
                   Restablecer filtros iniciales
                 </button>

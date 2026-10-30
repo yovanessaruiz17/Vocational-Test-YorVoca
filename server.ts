@@ -18,11 +18,53 @@ import { defaultAcademicRepository } from './src/services/academic/AcademicRepos
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function resolvePortAndHost() {
+  const args = process.argv.slice(2);
+  let port: number | undefined;
+  let host = '0.0.0.0';
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--port' && args[i + 1]) {
+      const p = Number(args[i + 1]);
+      if (!isNaN(p)) port = p;
+    }
+    if (args[i] === '--host' && args[i + 1]) {
+      host = args[i + 1];
+    }
+  }
+
+  // If port is not specified via CLI, check environment
+  if (!port) {
+    const envPort = Number(process.env.APP_PORT || process.env.PORT);
+    // Port 8080 is reserved for Nginx in AI Studio container, so default to 3000
+    if (!isNaN(envPort) && envPort !== 8080) {
+      port = envPort;
+    } else {
+      port = 3000;
+    }
+  }
+
+  // Never listen on 8080 as that's the Nginx reverse proxy port
+  if (port === 8080) {
+    port = 3000;
+  }
+
+  return { port, host };
+}
+
 async function startServer() {
   const app = express();
-  const port = Number(process.env.PORT) || 3000;
+  const { port, host } = resolvePortAndHost();
 
   app.use(express.json({ limit: '100kb' }));
+
+  app.get('/health', (_req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  app.get('/api/health', (_req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
 
   app.post('/api/ai/interpret', async (req, res) => {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -186,9 +228,22 @@ async function startServer() {
     app.use(vite.middlewares);
   }
 
-  app.listen(port, '0.0.0.0', () => {
-    console.log(`YorVoca server listening on http://0.0.0.0:${port}`);
+  const server = app.listen(port, host, () => {
+    console.log(`YorVoca server listening on http://${host}:${port}`);
+  });
+
+  server.on('error', (err: any) => {
+    console.error('Server listen error:', err);
   });
 }
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception in server process:', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection in server process:', reason);
+});
+
 startServer();
+

@@ -24,37 +24,37 @@ export const AssessmentNavigation: React.FC<AssessmentNavigationProps> = ({
   const isLast = currentIndex === totalQuestions - 1;
 
   return (
-    <div className="pt-6 border-t border-gray-100 flex items-center justify-between gap-3">
+    <div className="pt-6 border-t border-gray-100 flex items-center justify-between gap-2 sm:gap-3">
       <button
         type="button"
         onClick={onPrevious}
         disabled={isFirst}
-        className="min-h-[48px] px-5 py-2.5 rounded-xl border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+        className="min-h-[44px] sm:min-h-[48px] px-3.5 sm:px-5 py-2.5 rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
       >
-        <ArrowLeft className="w-4 h-4" />
-        Anterior
+        <ArrowLeft className="w-4 h-4 shrink-0" />
+        <span>Anterior</span>
       </button>
 
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2">
         {!isLast ? (
           <button
             type="button"
             onClick={onNext}
             disabled={!hasCurrentAnswer}
-            className="min-h-[48px] px-6 py-2.5 rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
+            className="min-h-[44px] sm:min-h-[48px] px-4 sm:px-6 py-2.5 rounded-xl bg-blue-600 text-xs sm:text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
           >
-            Siguiente
-            <ArrowRight className="w-4 h-4" />
+            <span>Siguiente</span>
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </button>
         ) : (
           <button
             type="button"
             onClick={onFinish}
             disabled={!hasCurrentAnswer}
-            className="min-h-[48px] px-6 py-2.5 rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
+            className="min-h-[44px] sm:min-h-[48px] px-4 sm:px-6 py-2.5 rounded-xl bg-blue-600 text-xs sm:text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
           >
-            <CheckCircle2 className="w-4 h-4" />
-            {isAllRequiredAnswered ? 'Calcular afinidades' : 'Revisar pendientes'}
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{isAllRequiredAnswered ? 'Calcular afinidades' : 'Revisar pendientes'}</span>
           </button>
         )}
       </div>

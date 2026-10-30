@@ -203,29 +203,29 @@ export const CareerExplanation: React.FC<CareerExplanationProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 sm:p-5 border-t border-gray-100 bg-white flex flex-wrap items-center justify-between gap-3">
+        <div className="p-4 sm:p-5 border-t border-gray-100 bg-white flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <Link
             to={`/careers/${encodeURIComponent(explanation.careerId)}`}
             onClick={onClose}
-            className="text-xs sm:text-sm font-medium text-blue-600 hover:underline whitespace-nowrap"
+            className="text-xs sm:text-sm font-medium text-blue-600 hover:underline text-center sm:text-left py-1"
           >
             Abrir página dedicada de la carrera
           </Link>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
             <Link
               to={`/academic?career=${encodeURIComponent(explanation.careerId)}`}
               onClick={onClose}
-              className="min-h-[44px] px-5 py-2 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 flex items-center gap-1.5 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >
-              <Building2 className="w-4 h-4" aria-hidden="true" />
-              Ver dónde estudiar
+              <Building2 className="w-4 h-4 shrink-0" aria-hidden="true" />
+              <span>Ver dónde estudiar</span>
             </Link>
 
             <button
               type="button"
               onClick={onClose}
-              className="min-h-[44px] px-5 py-2 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              className="min-h-[44px] px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs sm:text-sm font-semibold hover:bg-gray-50 transition-colors w-full sm:w-auto text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >
               Cerrar
             </button>

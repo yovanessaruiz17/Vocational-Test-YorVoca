@@ -223,11 +223,11 @@ export const ResultsPage: React.FC = () => {
               ¿Quieres comenzar nuevamente? Tu resultado actual será reemplazado cuando completes
               el nuevo test.
             </p>
-            <div className="pt-2 flex items-center justify-end gap-3">
+            <div className="pt-2 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 w-full">
               <button
                 type="button"
                 onClick={() => setIsRetakeModalOpen(false)}
-                className="min-h-[44px] px-4 py-2 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+                className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 w-full sm:w-auto text-center"
               >
                 Conservar mi resultado
               </button>
@@ -237,7 +237,7 @@ export const ResultsPage: React.FC = () => {
                   setIsRetakeModalOpen(false);
                   navigate('/test?retake=1');
                 }}
-                className="min-h-[44px] px-5 py-2 rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 whitespace-nowrap"
+                className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700 w-full sm:w-auto text-center"
               >
                 Comenzar nuevo test
               </button>

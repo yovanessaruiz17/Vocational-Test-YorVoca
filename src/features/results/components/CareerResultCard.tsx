@@ -85,22 +85,22 @@ export const CareerResultCard: React.FC<CareerResultCardProps> = ({
           {explanation.whyItAppeared}
         </p>
 
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
           <Link
             to={`/academic?career=${encodeURIComponent(careerScore.careerId)}`}
-            className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs sm:text-sm font-semibold hover:bg-gray-50 flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+            className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs sm:text-sm font-semibold hover:bg-gray-50 flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
-            <Building2 className="w-4 h-4 text-blue-600" aria-hidden="true" />
-            Ver dónde estudiar
+            <Building2 className="w-4 h-4 text-blue-600 shrink-0" aria-hidden="true" />
+            <span>Ver dónde estudiar</span>
           </Link>
 
           <button
             type="button"
             onClick={() => onExplore(careerScore.careerId)}
-            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
+            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1"
           >
-            Explorar esta carrera
-            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            <span>Explorar esta carrera</span>
+            <ArrowUpRight className="w-4 h-4 shrink-0" aria-hidden="true" />
           </button>
         </div>
       </div>

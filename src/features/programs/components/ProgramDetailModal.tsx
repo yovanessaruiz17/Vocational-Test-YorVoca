@@ -289,21 +289,23 @@ export const ProgramDetailModal: React.FC<ProgramDetailModalProps> = ({ item, on
           </div>
         </div>
 
-        <div className="p-4 sm:p-5 border-t border-gray-100 bg-white flex flex-wrap items-center justify-between gap-3">
+        <div className="p-4 sm:p-5 border-t border-gray-100 bg-white flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
           {officialUrl ? (
             <a
               href={officialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[44px] px-4 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm font-semibold text-blue-700 hover:bg-blue-50/50 flex items-center gap-1.5 whitespace-nowrap"
+              className="min-h-[44px] px-4 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm font-semibold text-blue-700 hover:bg-blue-50/50 flex items-center justify-center gap-1.5 w-full sm:w-auto text-center leading-snug transition-colors"
             >
-              {isRootInstitutionUrl
-                ? 'Ir al sitio oficial de la institución →'
-                : 'Ver información oficial del programa →'}
-              <ExternalLink className="w-4 h-4" aria-hidden="true" />
+              <span>
+                {isRootInstitutionUrl
+                  ? 'Ir al sitio oficial de la institución →'
+                  : 'Ver información oficial del programa →'}
+              </span>
+              <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
             </a>
           ) : (
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 text-center sm:text-left">
               Enlace oficial externo: Información no disponible en este registro
             </span>
           )}
@@ -311,7 +313,7 @@ export const ProgramDetailModal: React.FC<ProgramDetailModalProps> = ({ item, on
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] px-6 py-2 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+            className="min-h-[44px] px-6 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors w-full sm:w-auto text-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
             Cerrar
           </button>
