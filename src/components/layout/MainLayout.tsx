@@ -321,10 +321,10 @@ export const MainLayout: React.FC = () => {
               <div className="text-xs text-gray-500">
                 Contacto institucional:{' '}
                 <a
-                  href="mailto:yorle170203@gmail.com"
+                  href="mailto:yordevctg17@gmail.com"
                   className="text-blue-600 hover:underline"
                 >
-                  yorle170203@gmail.com
+                  yordevctg17@gmail.com
                 </a>
               </div>
             </div>
